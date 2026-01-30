@@ -9,7 +9,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private int userId;
+    private Integer userId;
 
     @Column(name="username")
     private String username;
@@ -20,11 +20,11 @@ public class User {
     @Column(name="password")
     private String password;
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
