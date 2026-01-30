@@ -1,12 +1,12 @@
--- CREATE A NEW DATABASE
+-- CLEANUP
 
-DROP DATABASE IF EXISTS paymybuddy;
-CREATE DATABASE paymybuddy;
-USE paymybuddy;
+DROP TABLE IF EXISTS user_connections;
+DROP TABLE IF EXISTS transactions;
+DROP TABLE IF EXISTS users;
 
 -- TABLE USERS
 
-CREATE TABLE USERS (
+CREATE TABLE users (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(100) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -15,34 +15,39 @@ CREATE TABLE USERS (
 
 -- TABLE: TRANSACTIONS
 
-CREATE TABLE TRANSACTIONS (
+CREATE TABLE transactions (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    sender INT NOT NULL,
-    receiver INT NOT NULL,
+    sender_id INT NOT NULL,
+    receiver_id INT NOT NULL,
     description VARCHAR(255),
     amount DOUBLE NOT NULL,
+
     CONSTRAINT fk_transactions_sender
-        FOREIGN KEY (sender) REFERENCES USERS(id),
+        FOREIGN KEY (sender_id) REFERENCES users(id),
+
     CONSTRAINT fk_transactions_receiver
-        FOREIGN KEY (receiver) REFERENCES USERS(id)
+        FOREIGN KEY (receiver_id) REFERENCES users(id)
 );
 
 -- TABLE: USER_CONNECTIONS
 
-CREATE TABLE USER_CONNECTIONS (
+CREATE TABLE user_connections (
     user_id INT NOT NULL,
     connection_id INT NOT NULL,
     PRIMARY KEY (user_id, connection_id),
-    CONSTRAINT fk_user
-        FOREIGN KEY (user_id) REFERENCES USERS(id) ON DELETE CASCADE,
-    CONSTRAINT fk_connection
-        FOREIGN KEY (connection_id) REFERENCES USERS(id) ON DELETE CASCADE
+
+    CONSTRAINT fk_user_connections_user
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+
+    CONSTRAINT fk_user_connections_connection
+        FOREIGN KEY (connection_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 
 --  TEST DATA - USERS
+-- passwords are placeholders
 
-INSERT INTO USERS (username, email, password) VALUES
+INSERT INTO users (username, email, password) VALUES
 ('alice', 'alice@test.com', '$2a$10$hashAlice'),
 ('bob', 'bob@test.com', '$2a$10$hashBob'),
 ('charlie', 'charlie@test.com', '$2a$10$hashCharlie'),
@@ -50,7 +55,7 @@ INSERT INTO USERS (username, email, password) VALUES
 
 -- TEST DATA - USER_CONNECTIONS
 
-INSERT INTO USER_CONNECTIONS (user_id, connection_id) VALUES
+INSERT INTO user_connections (user_id, connection_id) VALUES
 (1, 2),
 (1, 3),
 (2, 1),
@@ -61,7 +66,7 @@ INSERT INTO USER_CONNECTIONS (user_id, connection_id) VALUES
 
 -- TEST DATA - TRANSACTIONS
 
-INSERT INTO TRANSACTIONS (sender, receiver, description, amount) VALUES
+INSERT INTO transactions (sender_id, receiver_id, description, amount) VALUES
 (1, 2, 'Lunch', 25.50),
 (2, 1, 'Refund', 10.00),
 (3, 4, 'Gift', 40.00),
