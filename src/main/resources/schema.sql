@@ -32,9 +32,11 @@ CREATE TABLE transactions (
 -- TABLE: USER_CONNECTIONS
 
 CREATE TABLE user_connections (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     connection_id INT NOT NULL,
-    PRIMARY KEY (user_id, connection_id),
+
+    UNIQUE KEY uk_user_connection (user_id, connection_id)
 
     CONSTRAINT fk_user_connections_user
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
