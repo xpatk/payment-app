@@ -19,7 +19,9 @@ Technical stack
 
   Database
 
-  
+  ##schema
+
+![Database schema](bd-schema.png)
 
 The application uses a MySQL database.
 
