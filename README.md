@@ -18,6 +18,8 @@ Technical stack
 	•	JUnit
 
   Database
+  
+<img width="511" height="395" alt="bd-schema" src="https://github.com/user-attachments/assets/3d03fb44-60ef-4463-b611-17abccb99a0a" />
 
 The application uses a MySQL database.
 
