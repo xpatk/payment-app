@@ -18,6 +18,7 @@ Technical stack
 	•	JUnit
 
   Database
+
   
 
 The application uses a MySQL database.
