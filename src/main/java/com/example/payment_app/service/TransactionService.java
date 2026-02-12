@@ -14,11 +14,7 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    public List<Transaction> getSentTransactions(User user) {
-        return transactionRepository.findBySender(user);
-    }
-
-    public List<Transaction> getReceivedTransactions(User user) {
-        return transactionRepository.findByReceiver(user);
+    public List<Transaction> getAllUserTransactions(User user) {
+        return transactionRepository.findBySenderOrReceiver(user, user);
     }
 }
