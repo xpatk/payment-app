@@ -12,7 +12,7 @@
 	<artifactId>payment_app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>payment_app</name>
-	<description>Payment application Springboot</description>
+	<description>Payment application</description>
 	<url/>
 	<licenses>
 		<license/>

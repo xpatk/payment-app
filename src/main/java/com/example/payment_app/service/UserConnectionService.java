@@ -3,6 +3,7 @@ package com.example.payment_app.service;
 import com.example.payment_app.model.User;
 import com.example.payment_app.model.UserConnection;
 import com.example.payment_app.repository.UserConnectionRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +21,13 @@ public class UserConnectionService {
                 .map(UserConnection::getConnection)
                 .toList();
     }
+
+    @Transactional
+    public User saveConnection(User user, String connectionEmail) {
+        //check if connection exists
+        //add connection
+    }
+
+    // delete connection
 
 }
