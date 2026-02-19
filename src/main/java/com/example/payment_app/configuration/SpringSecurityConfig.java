@@ -1,4 +1,4 @@
-package configuration;
+package com.example.payment_app.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

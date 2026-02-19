@@ -1,4 +1,4 @@
-package configuration;
+package com.example.payment_app.configuration;
 
 import com.example.payment_app.model.User;
 import com.example.payment_app.repository.UserRepository;
