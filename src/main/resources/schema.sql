@@ -36,7 +36,7 @@ CREATE TABLE user_connections (
     user_id INT NOT NULL,
     connection_id INT NOT NULL,
 
-    UNIQUE KEY uk_user_connection (user_id, connection_id)
+    UNIQUE KEY uk_user_connection (user_id, connection_id),
 
     CONSTRAINT fk_user_connections_user
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
