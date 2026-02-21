@@ -19,7 +19,24 @@ public class SpringSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        //logic of access
+
+        http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login", "/register").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/transactions", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .permitAll()
+                );
+
         return http.build();
     }
 
@@ -29,11 +46,17 @@ public class SpringSecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager (HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http
-                .getSharedObject(AuthenticationManagerBuilder.class);
-                authenticationManagerBuilder.userDetailsService(customUserDetailsService)
-                        .passwordEncoder(bCryptPasswordEncoder);
-                return  authenticationManagerBuilder.build();
+    public AuthenticationManager authenticationManager(
+            HttpSecurity http,
+            BCryptPasswordEncoder passwordEncoder) throws Exception {
+
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+
+        authenticationManagerBuilder
+                .userDetailsService(customUserDetailsService)
+                .passwordEncoder(passwordEncoder);
+
+        return authenticationManagerBuilder.build();
     }
 }
