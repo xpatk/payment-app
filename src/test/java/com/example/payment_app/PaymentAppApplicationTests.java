@@ -1,6 +1,6 @@
 package com.example.payment_app;
 
-import com.example.payment_app.controllers.LoginController;
+import com.example.payment_app.controller.LoginController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

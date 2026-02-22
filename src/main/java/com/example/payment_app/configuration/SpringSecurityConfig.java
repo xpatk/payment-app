@@ -10,6 +10,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Main security configuration class.
+ *
+ * Configures:
+ * - authentication rules
+ * - login and logout behavior
+ * - password encoding
+ * - integration with CustomUserDetailsService
+ */
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
@@ -17,6 +26,17 @@ public class SpringSecurityConfig {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    /**
+     * Defines HTTP security configuration including:
+     * - public endpoints
+     * - authentication requirements
+     * - login form configuration
+     * - logout behavior
+     *
+     * @param http HttpSecurity builder
+     * @return configured SecurityFilterChain
+     * @throws Exception if configuration fails
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -40,11 +60,26 @@ public class SpringSecurityConfig {
         return http.build();
     }
 
+    /**
+     * Provides BCrypt password encoder bean used to hash passwords.
+     *
+     * @return BCryptPasswordEncoder instance
+     */
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configures the AuthenticationManager by linking:
+     * - CustomUserDetailsService
+     * - BCrypt password encoder
+     *
+     * @param http HttpSecurity builder
+     * @param passwordEncoder password encoder bean
+     * @return configured AuthenticationManager
+     * @throws Exception if configuration fails
+     */
     @Bean
     public AuthenticationManager authenticationManager(
             HttpSecurity http,
