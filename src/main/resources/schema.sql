@@ -50,10 +50,10 @@ CREATE TABLE user_connections (
 -- passwords are placeholders
 
 INSERT INTO users (username, email, password) VALUES
-('alice', 'alice@test.com', '$2a$10$hashAlice'),
-('bob', 'bob@test.com', '$2a$10$hashBob'),
-('charlie', 'charlie@test.com', '$2a$10$hashCharlie'),
-('diana', 'diana@test.com', '$2a$10$hashDiana');
+('alice', 'alice@test.com', '$2a$10$HzmDKN.H.S5kHMuInYNjaOxVmuI1Ix6T9iQGt3gvvj8ETAX8T/WLy'),
+('bob', 'bob@test.com', '$2a$10$HzmDKN.H.S5kHMuInYNjaOxVmuI1Ix6T9iQGt3gvvj8ETAX8T/WLy'),
+('charlie', 'charlie@test.com', '$2a$10$HzmDKN.H.S5kHMuInYNjaOxVmuI1Ix6T9iQGt3gvvj8ETAX8T/WLy'),
+('diana', 'diana@test.com', '$2a$10$HzmDKN.H.S5kHMuInYNjaOxVmuI1Ix6T9iQGt3gvvj8ETAX8T/WLy');
 
 -- TEST DATA - USER_CONNECTIONS
 
