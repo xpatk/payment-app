@@ -61,7 +61,6 @@ public class TransactionService {
             throw new IllegalArgumentException("Amount must be greater than zero");
         }
 
-        // NEW BUSINESS RULE:
         if (!userConnectionRepository.existsByUserAndConnection(sender, receiver)) {
             throw new IllegalArgumentException("You can only send money to your connections");
         }
