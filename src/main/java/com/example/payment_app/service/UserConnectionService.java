@@ -70,13 +70,8 @@ public class UserConnectionService {
             throw new IllegalArgumentException("You cannot add your own account as connection");
         }
 
-        boolean alreadyExists = userConnectionRepository
-                .findByUser(user)
-                .stream()
-                .anyMatch(uc -> uc.getConnection().getUserId().equals(connection.getUserId()));
-
-        if (alreadyExists) {
-            throw new RuntimeException("This connection already exists.");
+        if (userConnectionRepository.existsByUserAndConnection(user, connection)) {
+            throw new IllegalArgumentException("This connection already exists.");
         }
 
         UserConnection userConnection = new UserConnection();

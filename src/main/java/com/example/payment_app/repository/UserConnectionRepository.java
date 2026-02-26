@@ -27,4 +27,13 @@ public interface UserConnectionRepository extends JpaRepository<UserConnection, 
      */
     List<UserConnection> findByUser(User user);
 
+    /**
+     * Checks whether a connection already exists between two users.
+     *
+     * @param user owner of the connection
+     * @param connection connected user
+     * @return true if connection exists
+     */
+    boolean existsByUserAndConnection(User user, User connection);
+
 }
