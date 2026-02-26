@@ -21,6 +21,9 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private SecurityService securityService;
+
     /**
      * Finds a user by email.
      *
@@ -69,6 +72,9 @@ public class UserService {
     /**
      * Updates username and email of an existing user.
      *
+     * If the email (used as authentication principal) is changed,
+     * the Spring Security context is refreshed to keep the session consistent.
+     *
      * @param userId      ID of the user to update
      * @param newUsername new username
      * @param newEmail    new email
@@ -79,22 +85,33 @@ public class UserService {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
         if (newUsername == null || newUsername.isBlank()) {
             throw new IllegalArgumentException("Username cannot be empty");
         }
+
         if (newEmail == null || newEmail.isBlank()) {
             throw new IllegalArgumentException("Email cannot be empty");
         }
+
         User existingByEmail = userRepository.findByEmail(newEmail);
         if (existingByEmail != null && !existingByEmail.getUserId().equals(userId)) {
             throw new IllegalArgumentException("Email already in use");
         }
+
         User existingByUsername = userRepository.findByUsername(newUsername);
         if (existingByUsername != null && !existingByUsername.getUserId().equals(userId)) {
             throw new IllegalArgumentException("Username already in use");
         }
+
+        boolean emailChanged = !user.getEmail().equals(newEmail);
+
         user.setUsername(newUsername);
         user.setEmail(newEmail);
+
+        if (emailChanged) {
+            securityService.refreshAuthentication(user);
+        }
 
         return user;
     }
