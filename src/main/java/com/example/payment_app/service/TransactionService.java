@@ -2,10 +2,9 @@ package com.example.payment_app.service;
 
 import com.example.payment_app.model.Transaction;
 import com.example.payment_app.model.User;
-import com.example.payment_app.model.UserConnection;
 import com.example.payment_app.repository.TransactionRepository;
 import com.example.payment_app.repository.UserConnectionRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +42,7 @@ public class TransactionService {
      * @throws IllegalArgumentException if validation fails
      */
     @Transactional
-    public Transaction sendMoney(User sender, User receiver, Double amount) {
+    public Transaction sendMoney(User sender, User receiver, Double amount, String description) {
 
         if (sender == null) {
             throw new IllegalArgumentException("Sender cannot be null");
@@ -69,6 +68,7 @@ public class TransactionService {
         transaction.setSender(sender);
         transaction.setReceiver(receiver);
         transaction.setAmount(amount);
+        transaction.setDescription(description);
 
         return transactionRepository.save(transaction);
     }

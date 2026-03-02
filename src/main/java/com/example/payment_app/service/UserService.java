@@ -2,7 +2,7 @@ package com.example.payment_app.service;
 
 import com.example.payment_app.model.User;
 import com.example.payment_app.repository.UserRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

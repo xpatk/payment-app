@@ -2,6 +2,7 @@ package com.example.payment_app.controller;
 
 import com.example.payment_app.model.User;
 import com.example.payment_app.service.TransactionService;
+import com.example.payment_app.service.UserConnectionService;
 import com.example.payment_app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -27,6 +28,9 @@ public class TransactionController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserConnectionService userConnectionService;
+
     /**
      * Displays all transactions related to the currently authenticated user.
      *
@@ -40,11 +44,16 @@ public class TransactionController {
         if (authentication == null) {
             return "redirect:/login";
         }
+
         User user = userService.findByEmail(authentication.getName());
 
         if (user == null) {
             return "redirect:/login";
         }
+
+        model.addAttribute("connections",
+                userConnectionService.getConnectionsForUser(user));
+
         model.addAttribute("transactions",
                 transactionService.getAllUserTransactions(user));
 
@@ -63,6 +72,7 @@ public class TransactionController {
     @PostMapping("/transactions")
     public String sendMoney(
             @RequestParam String receiverEmail,
+            @RequestParam String description,
             @RequestParam Double amount,
             Authentication authentication,
             Model model
@@ -72,7 +82,7 @@ public class TransactionController {
             User sender = userService.findByEmail(authentication.getName());
             User receiver = userService.findByEmail(receiverEmail);
 
-            transactionService.sendMoney(sender, receiver, amount);
+            transactionService.sendMoney(sender, receiver, amount, description);
 
             return "redirect:/transactions";
 
@@ -83,6 +93,8 @@ public class TransactionController {
             User user = userService.findByEmail(authentication.getName());
             model.addAttribute("transactions",
                     transactionService.getAllUserTransactions(user));
+            model.addAttribute("connections",
+                    userConnectionService.getConnectionsForUser(user));
 
             return "transactions";
         }
