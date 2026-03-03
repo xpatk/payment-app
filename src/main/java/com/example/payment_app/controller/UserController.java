@@ -107,4 +107,17 @@ public class UserController {
             return "profile";
         }
     }
+
+    @GetMapping("/profile/edit")
+    public String showEditProfile(Authentication authentication, Model model) {
+
+        if (authentication == null) {
+            return "redirect:/login";
+        }
+
+        User user = userService.findByEmail(authentication.getName());
+        model.addAttribute("user", user);
+
+        return "profile-edit";
+    }
 }

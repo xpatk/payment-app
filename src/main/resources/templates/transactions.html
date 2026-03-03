@@ -8,34 +8,54 @@
     <title>Transactions</title>
 
     <style>
+        * { box-sizing: border-box; }
+
         body {
-            font-size: 22px;
-            font-family: sans-serif;
             margin: 0;
-            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
         }
 
-        .header {
+        .navbar {
             display: flex;
             justify-content: space-between;
-            width: 90%;
-            margin: 40px auto;
+            align-items: center;
+            padding: 0 60px;
+            height: 80px;
+            background: white;
+            border-bottom: 1px solid #e5e5e5;
         }
 
-        a {
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .navbar-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-links a,
+        .logout-button {
+            margin-left: 30px;
             text-decoration: none;
             color: black;
-            margin-left: 40px;
+            font-size: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            padding: 0;
         }
 
-        .linkActive {
-            color: #2c5bd1;
-            font-weight: bold;
+        .page-container {
+            padding: 60px;
         }
 
         .bodyPlace {
             width: 80%;
-            margin: 80px auto;
+            margin: 0 auto;
         }
 
         .transactionForm {
@@ -54,17 +74,9 @@
             margin-right: 20px;
         }
 
-        select {
-            width: 250px;
-        }
-
-        .descriptionInput {
-            width: 300px;
-        }
-
-        .amountInput {
-            width: 120px;
-        }
+        select { width: 250px; }
+        .descriptionInput { width: 300px; }
+        .amountInput { width: 120px; }
 
         .btnPrimary {
             background-color: #2c5bd1;
@@ -93,87 +105,90 @@
 
 <body>
 
-<div class="header">
-    <p>Pay My Buddy</p>
+<div class="navbar">
+    <div class="navbar-brand">Pay My Buddy</div>
 
-    <nav>
-        <a th:href="@{/transactions}" class="linkActive">Transférer</a>
+    <div class="navbar-links">
+        <a th:href="@{/transactions}">Transférer</a>
         <a th:href="@{/profile}">Profil</a>
-        <a th:href="@{/connections}">Relations</a>
+        <a th:href="@{/connections}">Ajouter relation</a>
 
-        <form th:action="@{/logout}" method="post" style="display:inline;">
+        <form th:action="@{/logout}" method="post">
             <input type="hidden"
                    th:name="${_csrf.parameterName}"
                    th:value="${_csrf.token}" />
-            <button type="submit"
-                    style="background:none;border:none;margin-left:40px;cursor:pointer;">
+            <button type="submit" class="logout-button">
                 Se déconnecter
             </button>
         </form>
-    </nav>
+    </div>
 </div>
 
-<div class="bodyPlace">
+<div class="page-container">
 
-    <div th:if="${error}" style="color:red;">
-        <p th:text="${error}"></p>
-    </div>
+    <div class="bodyPlace">
 
-    <div class="transactionForm">
+        <div th:if="${error}" style="color:red;">
+            <p th:text="${error}"></p>
+        </div>
 
-        <form th:action="@{/transactions}" method="post">
+        <div class="transactionForm">
 
-            <input type="hidden"
-                   th:name="${_csrf.parameterName}"
-                   th:value="${_csrf.token}" />
+            <form th:action="@{/transactions}" method="post">
 
-            <select name="receiverEmail" required>
-                <option value="">Sélectionner une relation</option>
-                <option th:each="connection : ${connections}"
-                        th:value="${connection.email}"
-                        th:text="${connection.username}">
-                </option>
-            </select>
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}" />
 
-            <input class="descriptionInput"
-                   type="text"
-                   name="description"
-                   placeholder="Description"
-                   required />
+                <select name="receiverEmail" required>
+                    <option value="">Sélectionner une relation</option>
+                    <option th:each="connection : ${connections}"
+                            th:value="${connection.email}"
+                            th:text="${connection.username}">
+                    </option>
+                </select>
 
-            <input class="amountInput"
-                   type="number"
-                   name="amount"
-                   placeholder="0 €"
-                   step="0.01"
-                   min="0.01"
-                   required />
+                <input class="descriptionInput"
+                       type="text"
+                       name="description"
+                       placeholder="Description"
+                       required />
 
-            <button class="btnPrimary" type="submit">
-                Payer
-            </button>
+                <input class="amountInput"
+                       type="number"
+                       name="amount"
+                       placeholder="0 €"
+                       step="0.01"
+                       min="0.01"
+                       required />
 
-        </form>
+                <button class="btnPrimary" type="submit">
+                    Payer
+                </button>
 
-    </div>
-
-    <div class="transactionHistoric">
-        <h3>Mes transactions</h3>
-
-        <div th:each="transaction : ${transactions}"
-             class="transactionRow">
-
-            <div>
-                <span th:text="${transaction.receiver.username}"></span>
-                —
-                <span th:text="${transaction.description}"></span>
-            </div>
-
-            <div>
-                <strong th:text="${transaction.amount}"></strong> €
-            </div>
+            </form>
 
         </div>
+
+        <div class="transactionHistoric">
+            <h3>Mes transactions</h3>
+
+            <div th:each="transaction : ${transactions}"
+                 class="transactionRow">
+
+                <div>
+                    <span th:text="${transaction.receiver.username}"></span>
+                    —
+                    <span th:text="${transaction.description}"></span>
+                </div>
+
+                <div>
+                    <strong th:text="${transaction.amount}"></strong> €
+                </div>
+
+            </div>
+        </div>
+
     </div>
 
 </div>
