@@ -11,9 +11,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
 
 @WebMvcTest(UserConnectionControllerTest.class)
 class UserConnectionControllerTest {
@@ -37,9 +39,12 @@ class UserConnectionControllerTest {
         User friend = new User();
         friend.setUserId(2);
 
+        User friend2 = new User();
+        friend2.setUserId(3);
+
         when(userService.findByEmail("user@mail.com")).thenReturn(user);
         when(userConnectionService.getConnectionsForUser(user))
-                .thenReturn(List.of(friend));
+                .thenReturn(List.of(friend, friend2));
 
         mockMvc.perform(get("/connections"))
                 .andExpect(status().isOk())
