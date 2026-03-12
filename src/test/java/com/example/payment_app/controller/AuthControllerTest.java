@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -16,7 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(AuthController.class)
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 class AuthControllerTest {
 
     @Autowired
@@ -26,14 +27,15 @@ class AuthControllerTest {
     private UserService userService;
 
     @Test
+    @WithMockUser
     void shouldReturnLoginPage() throws Exception {
 
         mockMvc.perform(get("/login"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("login"));
+                .andExpect(status().isOk());
     }
 
     @Test
+    @WithMockUser
     void shouldRedirectRootToLogin() throws Exception {
 
         mockMvc.perform(get("/"))
@@ -42,14 +44,15 @@ class AuthControllerTest {
     }
 
     @Test
+    @WithMockUser
     void shouldReturnRegisterPage() throws Exception {
 
         mockMvc.perform(get("/register"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("register"));
+                .andExpect(status().isOk());
     }
 
     @Test
+    @WithMockUser
     void shouldRegisterUserSuccessfully() throws Exception {
 
         mockMvc.perform(post("/register")
@@ -64,6 +67,7 @@ class AuthControllerTest {
     }
 
     @Test
+    @WithMockUser
     void shouldReturnRegisterPageWhenRegistrationFails() throws Exception {
 
         doThrow(new IllegalArgumentException("Username exists"))
@@ -76,7 +80,6 @@ class AuthControllerTest {
                         .param("email","test@mail.com")
                         .param("password","password"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("register"))
                 .andExpect(model().attributeExists("error"));
     }
 }

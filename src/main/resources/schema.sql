@@ -16,17 +16,15 @@ CREATE TABLE users (
 -- TABLE: TRANSACTIONS
 
 CREATE TABLE transactions (
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    sender_id INT NOT NULL,
-    receiver_id INT NOT NULL,
-    description VARCHAR(255),
-    amount DOUBLE NOT NULL,
-
-    CONSTRAINT fk_transactions_sender
-        FOREIGN KEY (sender_id) REFERENCES users(id),
-
-    CONSTRAINT fk_transactions_receiver
-        FOREIGN KEY (receiver_id) REFERENCES users(id)
+ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ sender_id INT NOT NULL,
+ receiver_id INT NOT NULL,
+ description VARCHAR(255),
+ amount DECIMAL(10,2) NOT NULL,
+ CONSTRAINT fk_transactions_sender
+     FOREIGN KEY (sender_id) REFERENCES users(id),
+ CONSTRAINT fk_transactions_receiver
+     FOREIGN KEY (receiver_id) REFERENCES users(id)
 );
 
 -- TABLE: USER_CONNECTIONS
@@ -36,7 +34,7 @@ CREATE TABLE user_connections (
     user_id INT NOT NULL,
     connection_id INT NOT NULL,
 
-    UNIQUE KEY uk_user_connection (user_id, connection_id),
+    CONSTRAINT uk_user_connection UNIQUE (user_id, connection_id),
 
     CONSTRAINT fk_user_connections_user
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,

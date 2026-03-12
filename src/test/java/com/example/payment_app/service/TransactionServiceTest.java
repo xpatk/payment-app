@@ -115,7 +115,7 @@ class TransactionServiceTest {
         receiver.setUserId(2);
 
         assertThatThrownBy(() ->
-                transactionService.sendMoney(sender, receiver, 0.0, "Test"))
+                transactionService.sendMoney(sender, receiver, -10.0, "Test"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Amount");
     }

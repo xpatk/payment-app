@@ -6,7 +6,6 @@ import com.example.payment_app.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,8 +16,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+
 @WebMvcTest(UserController.class)
-@AutoConfigureMockMvc
 class UserControllerTest {
 
     @Autowired
@@ -30,13 +29,19 @@ class UserControllerTest {
     @MockitoBean
     private SecurityService securityService;
 
+    private User createUser() {
+        User user = new User();
+        user.setUserId(1);
+        user.setUsername("user");
+        user.setEmail("user@mail.com");
+        return user;
+    }
+
     @Test
     @WithMockUser(username = "user@mail.com")
     void shouldReturnProfilePage() throws Exception {
 
-        User user = new User();
-        user.setUserId(1);
-        user.setEmail("user@mail.com");
+        User user = createUser();
 
         when(userService.findByEmail("user@mail.com")).thenReturn(user);
 
@@ -50,17 +55,14 @@ class UserControllerTest {
     void shouldRedirectToLoginWhenNotAuthenticated() throws Exception {
 
         mockMvc.perform(get("/profile"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/login"));
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
     @WithMockUser(username = "user@mail.com")
     void shouldUpdateProfile() throws Exception {
 
-        User user = new User();
-        user.setUserId(1);
-        user.setEmail("user@mail.com");
+        User user = createUser();
 
         when(userService.findByEmail("user@mail.com")).thenReturn(user);
 
@@ -78,9 +80,7 @@ class UserControllerTest {
     @WithMockUser(username = "user@mail.com")
     void shouldReturnProfileWhenUpdateFails() throws Exception {
 
-        User user = new User();
-        user.setUserId(1);
-        user.setEmail("user@mail.com");
+        User user = createUser();
 
         when(userService.findByEmail("user@mail.com")).thenReturn(user);
 
@@ -94,6 +94,7 @@ class UserControllerTest {
                         .param("email", "new@mail.com"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("profile"))
+                .andExpect(model().attributeExists("user"))
                 .andExpect(model().attributeExists("error"));
     }
 
@@ -101,9 +102,7 @@ class UserControllerTest {
     @WithMockUser(username = "user@mail.com")
     void shouldUpdatePassword() throws Exception {
 
-        User user = new User();
-        user.setUserId(1);
-        user.setEmail("user@mail.com");
+        User user = createUser();
 
         when(userService.findByEmail("user@mail.com")).thenReturn(user);
 
@@ -120,9 +119,7 @@ class UserControllerTest {
     @WithMockUser(username = "user@mail.com")
     void shouldReturnEditProfilePage() throws Exception {
 
-        User user = new User();
-        user.setUserId(1);
-        user.setEmail("user@mail.com");
+        User user = createUser();
 
         when(userService.findByEmail("user@mail.com")).thenReturn(user);
 

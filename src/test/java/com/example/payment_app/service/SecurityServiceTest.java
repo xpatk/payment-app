@@ -12,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.List;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -40,7 +42,8 @@ class SecurityServiceTest {
         Authentication currentAuth =
                 new UsernamePasswordAuthenticationToken(
                         "old@mail.com",
-                        "pass"
+                        "pass",
+                        List.of()
                 );
 
         SecurityContextHolder.getContext().setAuthentication(currentAuth);
@@ -64,7 +67,8 @@ class SecurityServiceTest {
         Authentication auth =
                 new UsernamePasswordAuthenticationToken(
                         "user@mail.com",
-                        "pass"
+                        "pass",
+                        List.of()
                 );
 
         SecurityContextHolder.getContext().setAuthentication(auth);

@@ -62,14 +62,13 @@ public class UserController {
             Model model
     ) {
 
+        User user = userService.findByEmail(authentication.getName());
         try {
-            User user = userService.findByEmail(authentication.getName());
-
             userService.updateUser(user.getUserId(), username, email);
-
             return "redirect:/profile";
 
         } catch (IllegalArgumentException e) {
+            model.addAttribute("user", user);
             model.addAttribute("error", e.getMessage());
             return "profile";
         }
@@ -88,9 +87,8 @@ public class UserController {
             HttpServletRequest request,
             Model model
     ) {
-
+        User user = userService.findByEmail(authentication.getName());
         try {
-            User user = userService.findByEmail(authentication.getName());
 
             userService.updatePassword(user.getUserId(), password);
 
@@ -103,6 +101,7 @@ public class UserController {
             return "redirect:/login?passwordChanged";
 
         } catch (IllegalArgumentException e) {
+            model.addAttribute("user", user);
             model.addAttribute("error", e.getMessage());
             return "profile";
         }

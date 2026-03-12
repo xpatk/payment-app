@@ -56,6 +56,24 @@ class UserConnectionServiceTest {
     }
 
     /**
+     * Should return an empty line
+     */
+
+    @Test
+    void shouldReturnEmptyListWhenUserHasNoConnections() {
+
+        User user = new User();
+        user.setUserId(1);
+
+        when(userConnectionRepository.findByUser(user))
+                .thenReturn(List.of());
+
+        List<User> result = userConnectionService.getConnectionsForUser(user);
+
+        assertThat(result).isEmpty();
+    }
+
+    /**
      * Should create a new connection when valid user email is provided.
      */
     @Test
