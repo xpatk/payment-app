@@ -51,7 +51,7 @@ This script:
 
 ## Database Schema
 
-![Database schema](bd-schema.png)
+![Database schema](Diagram.png)
 
 ---
 
