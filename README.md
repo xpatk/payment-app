@@ -1,13 +1,6 @@
-# PayMyBuddy
-
-🚧 **PROJECT STATUS: UNDER DEVELOPMENT**
-
----
-
 ## General Application Purpose
 
 PayMyBuddy is a Spring Boot application that allows users to transfer money between each other in order to manage payments and personal financial connections.
-
 This project is developed in a learning context and focuses on backend architecture, database design, transaction management, and data persistence using Spring Data JPA.
 
 ---
@@ -78,19 +71,9 @@ spring.jpa.hibernate.ddl-auto=none
 spring.sql.init.mode=always
 ```
 
----
-
-## Required Environment Variables
-
-Before running the application, you must define the following environment variables:
-
-- `DB_USER`
-- `DB_PASSWORD`
-
 These variables can be configured:
 
 - In IntelliJ → Run Configuration → Environment Variables
-- Or as system environment variables
 
 ---
 
@@ -121,24 +104,5 @@ The application follows a layered architecture:
 - **Repository** → Spring Data JPA interfaces
 - **Service** → Business logic
 - **Configuration** → Security and application configuration
-
----
-
-## Testing
-
-Unit and integration tests will validate:
-
-- Database connectivity
-- Repository behavior
-- Service layer logic
-- Transaction rollback behavior
-
----
-
-## Notes
-
-- The database must be running before application startup.
-- SQL schema is managed manually (Hibernate auto-ddl is disabled).
-- Passwords are encrypted using BCrypt.
 
 ---
